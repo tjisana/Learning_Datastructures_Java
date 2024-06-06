@@ -51,7 +51,7 @@ public class LinkedListTK {
             do {
                 currentNode = currentNode.next;
                 counter++;
-            }while (currentNode!=null && counter < position-1);
+            }while (currentNode!=null && counter < position);
             //TODO deal with the end of the list
             if (currentNode==null){
                 return Optional.empty();
