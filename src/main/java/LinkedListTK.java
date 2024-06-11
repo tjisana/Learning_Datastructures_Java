@@ -1,10 +1,15 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class LinkedListTK {
     Node head;
+
+    public LinkedListTK(){}
+    public LinkedListTK(List<Integer> list){
+
+        for(Integer i: list){
+            insert(i);
+        }
+    }
 
     public void insert(int data){
         Node newNode = new Node(data);
@@ -72,6 +77,26 @@ public class LinkedListTK {
         temp.add(last.data); // we've reached the last node
         return temp;
     }
+
+    private LinkedListTK reversed_old(){
+        if (head!=null && head.next==null){
+            return this;
+        }
+        List<Integer> asList = this.convertToList();
+        Collections.reverse(asList);
+        return new LinkedListTK(asList);
+    }
+
+    public LinkedListTK reversed(){
+        return reversed_old();
+    }
+
+//    public LinkedListTK reversed_new(LinkedListTK linkedListtk){
+//        // 1, 2 , 3
+//        //linkedListtk.head
+//        //reversed_new(linkedListtk.head.next)
+//        //if linkedListtk.head.next==null return
+//    }
 
     static class Node {
         int data;

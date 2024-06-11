@@ -108,4 +108,31 @@ public class LinkedListTest {
         }
     }
 
+    @Test
+    public void test_SingleElementLinkedListIsReversed(){
+        //Arrange
+        expectedList = Arrays.asList(1);
+
+        //Act
+        linkedListTK.insert(1);
+        LinkedListTK reversed = linkedListTK.reversed();
+
+        //Assert
+        assertEquals(expectedList, reversed.convertToList());
+    }
+
+    @Test
+    public void test_TwoElementLinkedListIsReversed(){
+        //Arrange
+        expectedList = Arrays.asList(1, 7);
+
+        //Act
+        linkedListTK.insert(7);
+        linkedListTK.insert(1);
+        LinkedListTK reversed = linkedListTK.reversed();
+
+        //Assert
+        assertEquals(expectedList, reversed.convertToList());
+    }
+
 }
