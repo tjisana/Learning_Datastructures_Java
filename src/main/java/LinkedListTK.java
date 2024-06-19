@@ -78,25 +78,46 @@ public class LinkedListTK {
         return temp;
     }
 
-    private LinkedListTK reversed_old(){
-        if (head!=null && head.next==null){
-            return this;
+
+    public void reverse_iteration(){
+        // 1. Save the Node the current Node's next points to
+        // 2. change current Node's next to point to the previous Node
+        // 3. prev is now head.
+        // 4. head is now nxt (notice nxt is purposely spelt differently from next)
+        // 5. iterate
+        Node prev = null;
+
+        while (head!=null){
+            Node nxt = head.next;
+            head.next = prev;
+            prev = head;
+            head = nxt;
         }
-        List<Integer> asList = this.convertToList();
-        Collections.reverse(asList);
-        return new LinkedListTK(asList);
+
+        head = prev;
     }
 
-    public LinkedListTK reversed(){
-        return reversed_old();
+    public void reverse_recurive(){
+        reverse_LinkedList(head);
     }
 
-//    public LinkedListTK reversed_new(LinkedListTK linkedListtk){
-//        // 1, 2 , 3
-//        //linkedListtk.head
-//        //reversed_new(linkedListtk.head.next)
-//        //if linkedListtk.head.next==null return
-//    }
+    private void reverse_LinkedList(Node curr){
+        // if curr is null return
+        // if curr.next is null, we are at last node. set head to curr then return
+        // recursively traverse the list
+        // set curr.next.next to curr
+        // set curr.next to null
+        if (curr==null){
+            return;
+        }
+        if(curr.next == null){
+            this.head = curr;
+            return;
+        }
+        reverse_LinkedList(curr.next);
+        curr.next.next = curr;
+        curr.next = null;
+    }
 
     static class Node {
         int data;

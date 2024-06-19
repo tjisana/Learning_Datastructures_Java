@@ -115,10 +115,35 @@ public class LinkedListTest {
 
         //Act
         linkedListTK.insert(1);
-        LinkedListTK reversed = linkedListTK.reversed();
+        linkedListTK.reverse_iteration();
 
         //Assert
-        assertEquals(expectedList, reversed.convertToList());
+        assertEquals(expectedList, linkedListTK.convertToList());
+    }
+
+    @Test
+    public void test_SingleElementLinkedListIsReversed_recursive(){
+        //Arrange
+        expectedList = Arrays.asList(1);
+
+        //Act
+        linkedListTK.insert(1);
+        linkedListTK.reverse_recurive();
+
+        //Assert
+        assertEquals(expectedList, linkedListTK.convertToList());
+    }
+
+    @Test
+    public void test_NullLinkedListIsReversed_recursive(){
+        //Arrange
+        linkedListTK = new LinkedListTK();
+
+        //Act
+        linkedListTK.reverse_recurive();
+
+        //Assert
+//        assertEquals(expectedList, linkedListTK.convertToList());
     }
 
     @Test
@@ -129,10 +154,58 @@ public class LinkedListTest {
         //Act
         linkedListTK.insert(7);
         linkedListTK.insert(1);
-        LinkedListTK reversed = linkedListTK.reversed();
+        linkedListTK.reverse_iteration();
 
         //Assert
-        assertEquals(expectedList, reversed.convertToList());
+        assertEquals(expectedList, linkedListTK.convertToList());
+    }
+
+    @Test
+    public void test_TwoElementLinkedListIsReversed_recursive(){
+        //Arrange
+        expectedList = Arrays.asList(1, 7);
+
+        //Act
+        linkedListTK.insert(7);
+        linkedListTK.insert(1);
+        linkedListTK.reverse_recurive();
+
+        //Assert
+        assertEquals(expectedList, linkedListTK.convertToList());
+    }
+
+    @Test
+    public void test_FiveElementLinkedListIsReversed(){
+        //Arrange
+        expectedList = Arrays.asList(5, 4, 3, 2, 1);
+
+        //Act
+        linkedListTK.insert(1);
+        linkedListTK.insert(2);
+        linkedListTK.insert(3);
+        linkedListTK.insert(4);
+        linkedListTK.insert(5);
+        linkedListTK.reverse_iteration();
+
+        //Assert
+        assertEquals(expectedList, linkedListTK.convertToList());
+    }
+
+    @Test
+    public void test_FiveElementLinkedListIsReversed_recursive(){
+        //Arrange
+        expectedList = Arrays.asList(5, 4, 3, 2, 1);
+
+        //Act
+        linkedListTK.insert(1);
+        linkedListTK.insert(2);
+        linkedListTK.insert(3);
+        linkedListTK.insert(4);
+        linkedListTK.insert(5);
+        linkedListTK.reverse_iteration();
+
+        //Assert
+        assertEquals(expectedList, linkedListTK.convertToList());
     }
 
 }
