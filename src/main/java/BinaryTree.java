@@ -29,19 +29,65 @@ public class BinaryTree {
 
 
     public boolean equals(Object o){
-        if (o instanceof BinaryTree){
-
-        }
         if (this == o){
-             return true;
-        } else if (!(o instanceof BinaryTree)) {
+            return true;
+        }
+        else if (!(o instanceof BinaryTree)) {
             return false;
         }
         else{
-            if (this.left == null){
-                return this.value == ((BinaryTree) o).value;
+            BinaryTree bt = (BinaryTree) o;
+            boolean leftBothNull = this.left == null && bt.left == null;
+            boolean rightBothNull = this.right == null && bt.right == null;
+//            boolean onlyOneNull =
+            if (leftBothNull && rightBothNull){
+                return this.value == bt.value;
+            } else if (leftBothNull && this.right != null && bt.right != null) {
+                boolean rightIsEqual = this.right.equals(bt.right);
+                boolean valuesAreEqual = (this.value == bt.value);
+                return rightIsEqual && valuesAreEqual;
+            } else if (leftBothNull && ( this.right != null && bt.right == null )) {
+
             }
-            return this.left.equals(((BinaryTree) o).left) && this.value == ((BinaryTree) o).value;
+
+            if (leftBothNull){
+                if (rightBothNull){
+                    return this.value == bt.value;
+                }
+                else if (this.right != null && bt.right != null){
+                    boolean rightIsEqual = this.right.equals(bt.right);
+                    boolean valuesAreEqual = (this.value == bt.value);
+                    return rightIsEqual && valuesAreEqual;
+                }
+                else{
+                    return false;
+                }
+            }
+
+            if (rightBothNull){
+                if (leftBothNull){
+                    return this.value == bt.value;
+                }else if (this.left !=null && bt.left != null){
+                    boolean leftIsEqual = this.left.equals(bt.left);
+                    boolean valuesAreEqual = (this.value == bt.value);
+                    return leftIsEqual && valuesAreEqual;
+                }else{
+                    return false;
+                }
+            }
+
+            if (this.left == null && bt.left != null){
+                return false;
+            }
+            if (this.right == null && bt.right != null){
+                return false;
+            }
+
+            boolean valuesAreEqual = (this.value == bt.value);
+            boolean leftIsEqual = this.left.equals(bt.left);
+            boolean rightIsEqual = this.right.equals(bt.right);
+            return valuesAreEqual && leftIsEqual && rightIsEqual;
+
         }
     }
 
