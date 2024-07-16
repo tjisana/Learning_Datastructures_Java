@@ -79,4 +79,48 @@ public class BinaryTreeTest {
         //Assert
         assertNotEquals(binaryTree, binaryTree1);
     }
+
+    @Test
+    public void test_BreadthFirstPrint(){
+        //Arrange
+        int dataRoot = 1;
+        int dataL = 2;
+        int dataR = 3;
+        int dataLL = 4;
+        int dataLR = 5;
+        BinaryTree treeLL = new BinaryTree(dataLL, null, null);
+        BinaryTree treeLR = new BinaryTree(dataLR, null, null);
+        BinaryTree treeL = new BinaryTree(dataL, treeLL, treeLR);
+        BinaryTree treeR = new BinaryTree(dataR, null, null);
+        BinaryTree root = new BinaryTree(dataRoot, treeL, treeR);
+
+        //Act
+        String treeOutput = root.breadthFirstPrint();
+        String expected = dataRoot + " " + dataL + " " + dataR + " " + dataLL + " " + dataLR + " ";
+
+        //Assert
+        assertEquals(expected, treeOutput);
+    }
+
+    @Test
+    public void test_postorderTraversalPrint(){
+        //Arrange
+        int dataRoot = 1;
+        int dataL = 2;
+        int dataR = 3;
+        int dataLL = 4;
+        int dataLR = 5;
+        BinaryTree treeLL = new BinaryTree(dataLL, null, null);
+        BinaryTree treeLR = new BinaryTree(dataLR, null, null);
+        BinaryTree treeL = new BinaryTree(dataL, treeLL, treeLR);
+        BinaryTree treeR = new BinaryTree(dataR, null, null);
+        BinaryTree root = new BinaryTree(dataRoot, treeL, treeR);
+
+        //Act
+        String treeOutput = root.postorderTraversalPrint();
+        String expected = dataRoot + " " + dataL + " " + dataR + " " + dataLL + " " + dataLR + " ";
+
+        //Assert
+        assertEquals(expected, treeOutput);
+    }
 }
