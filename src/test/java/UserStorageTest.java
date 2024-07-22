@@ -21,7 +21,7 @@ public class UserStorageTest {
     @Test
     public void test_readUser_returnsNotNull_whenPassedIDMatchingRecordInFile(){
         //Arrange
-        String fileName = "C:\\Users\\tjisa\\dev\\Learning_Datastructures_Java\\src\\test\\resources\\fileWith1User.txt";
+        String fileName = "src/test/resources/fileWith1User.txt";
         int id = 1;
         UserStorage userStorage = new UserStorage(fileName);
 
