@@ -1,3 +1,5 @@
+package serializationpractice;
+
 import java.util.Objects;
 
 public class User {
@@ -11,6 +13,11 @@ public class User {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s,%s,%s", this.id, this.name, this.age);
     }
 
     @Override
