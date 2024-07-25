@@ -1,9 +1,10 @@
+package serializationpractice;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import serializationpractice.User;
-import serializationpractice.UserStorage;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,9 @@ public class UserStorageTest {
 
     private final String emptyFilePath = "src/test/resources/emptyFile.txt";
     private final String userFilePath = "src/test/resources/userFile.txt";
+    private final User tj = new User(1, "TJ", 25);
+    private final User alex = new User(2, "Alex", 25);
+    private final User kiki = new User(3, "Kiki", 1);
 
     @BeforeEach
     public void setupFiles() throws IOException {
@@ -25,9 +29,9 @@ public class UserStorageTest {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)) {
 
-            out.println("1,TJ,25");
-            out.println("2,Alex,25");
-            out.println("3,Kiki,1");
+            out.println(tj);
+            out.println(alex);
+            out.println(kiki);
 
         } catch (IOException e) {
             System.out.printf("Could not create setup file %s%n",userFilePath);
@@ -64,83 +68,82 @@ public class UserStorageTest {
     @Test
     public void test_readUser_returnsUserWithCorrectFields_whenPassedIDMatchingRecordInFile(){
         //Arrange
-        int id = 1;
-        String name = "TJ";
-        int age = 25;
         UserStorage userStorage = new UserStorage(userFilePath);
-        User expectedUser = new User(id, name, age);
 
         //Act
-        User user = userStorage.readUser(id);
+        User user = userStorage.readUser(tj.getId());
 
         //Assert
-        assertEquals(expectedUser, user);
+        assertEquals(tj, user);
     }
 
     @Test
     public void test_writeUser_AddOneUserToEmptyFile(){
         //Arrange
-        int id = 1;
-        String name = "TJ";
-        int age = 25;
         UserStorage userStorage = new UserStorage(emptyFilePath);
-        User userToBeWritten = new User(id, name, age);
+
 
         //Act
-        userStorage.writeUser(userToBeWritten);
-        User userReadFromFile = userStorage.readUser(id);
+        userStorage.writeUser(tj);
+        User userReadFromFile = userStorage.readUser(tj.getId());
 
         //Assert
-        assertEquals(userToBeWritten, userReadFromFile);
+        assertEquals(tj, userReadFromFile);
     }
 
     @Test
     public void test_readUser_FromFileWithMultipleUsers(){
         //Arrange
         UserStorage userStorage = new UserStorage(userFilePath);
-        int expectedId = 3;
-        User expectedUser = new User(expectedId, "Kiki", 1);
 
         //Act
-        User userReadFromFile = userStorage.readUser(expectedId);
+        User userReadFromFile = userStorage.readUser(kiki.getId());
 
         //Assert
-        assertEquals(expectedUser, userReadFromFile);
+        assertEquals(kiki, userReadFromFile);
     }
 
     @Test
     public void test_writeUser_AddTwoUsersToEmptyFile_verifySecondUser(){
         //Arrange
         UserStorage userStorage = new UserStorage(emptyFilePath);
-        int expectedId = 1;
-        User userToBeWritten = new User(expectedId, "TJ", 25);
-        int expectedId1 = 2;
-        User userToBeWritten1 = new User(expectedId1, "Alex", 25);
 
         //Act
-        userStorage.writeUser(userToBeWritten);
-        userStorage.writeUser(userToBeWritten1);
-        User userReadFromFile = userStorage.readUser(expectedId);
-        User userReadFromFile1 = userStorage.readUser(expectedId1);
+        userStorage.writeUser(tj);
+        userStorage.writeUser(alex);
+        User userReadFromFile = userStorage.readUser(tj.getId());
+        User userReadFromFile1 = userStorage.readUser(alex.getId());
 
         //Assert
-        assertEquals(userToBeWritten, userReadFromFile);
-        assertEquals(userToBeWritten1, userReadFromFile1);
+        assertEquals(tj, userReadFromFile);
+        assertEquals(alex, userReadFromFile1);
     }
 
     @Test
     public void test_readAllUsers_allUsersAreReadSuccessfully(){
         //Arrange
         UserStorage userStorage = new UserStorage(userFilePath);
-        User tj = new User(1, "TJ", 25);
-        User alex = new User(1, "Alex", 25);
-        User kiki = new User(1, "Kiki", 1);
+        List<User> expected = Arrays.asList(tj, alex, kiki);
 
         //Act
         List<User> allUsers = userStorage.readAllUsers();
 
         //Assert
+        assertEquals(expected, allUsers);
+    }
 
+    @Test
+    public void test_deleteUser_correctlyDeletesUserFromFile(){
+        //Arrange
+        UserStorage userStorage = new UserStorage(userFilePath);
+        List<User> expected = Arrays.asList(alex, kiki);
+
+        //Act
+        userStorage.deleteUser(tj.getId());
+        List<User> allUsers = userStorage.readAllUsers();
+
+        //Assert
+        assertEquals(expected, allUsers);
     }
 
 }

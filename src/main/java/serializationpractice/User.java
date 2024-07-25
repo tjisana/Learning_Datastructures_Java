@@ -15,6 +15,18 @@ public class User {
         this.age = age;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
     @Override
     public String toString(){
         return String.format("%s,%s,%s", this.id, this.name, this.age);
