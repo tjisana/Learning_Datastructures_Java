@@ -3,6 +3,7 @@ package daopractice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.beans.Transient;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
@@ -129,17 +130,34 @@ public class UserBinaryFileStorageTest {
         assertEquals(expected, allUsers);
     }
 
-//    @Test
-//    public void test_deleteUser_correctlyDeletesUserFromFile(){
-//        //Arrange
-//        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
-//        List<User> expected = Arrays.asList(alex, kiki);
-//
-//        //Act
-//        userStorage.deleteUser(tj.getId());
-//        List<User> allUsers = userStorage.readAllUsers();
-//
-//        //Assert
-//        assertEquals(expected, allUsers);
-//    }
+    @Test
+    public void test_deleteUser_correctlyDeletesUserFromFile(){
+        //Arrange
+        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
+        List<User> expected = Arrays.asList(alex, kiki);
+
+        //Act
+        userStorage.delete(tj.getId());
+        List<User> allUsers = userStorage.readAll();
+
+        //Assert
+        assertEquals(expected, allUsers);
+    }
+
+    @Test
+    public void test_writeUser_customSerializationIsCorrect(){
+        //Arrange
+        int level = 50;
+        int expectedLevel = 100;
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(emptyFilePath);
+        User thanos = new User(4, "Thanos", 1000, level);
+
+        //Act
+        userBinaryFileStorage.write(thanos);
+        User userReadFromFile = userBinaryFileStorage.read(thanos.getId());
+
+
+        //Assert
+        assertEquals(expectedLevel, userReadFromFile.getLevel());
+    }
 }

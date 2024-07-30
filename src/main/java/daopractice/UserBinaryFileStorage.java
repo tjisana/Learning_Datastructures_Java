@@ -1,5 +1,7 @@
 package daopractice;
 
+import serializationpractice.UserOld;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -25,11 +27,15 @@ public class UserBinaryFileStorage implements UserDAO{
                 }
             }
         } catch (NullPointerException e){
+            System.out.printf("read method --> %s%n", e.getClass());
+            System.out.println(e.getMessage());
             return null;
         } catch (FileNotFoundException e) {
+            System.out.printf("read method --> %s%n", e.getClass());
             System.out.println(e.getMessage());
             return null;
         } catch (IOException | ClassNotFoundException e) {
+            System.out.printf("read method --> %s%n", e.getClass());
             System.out.println(e.getMessage());
             return null;
 //            throw new RuntimeException(e);
@@ -52,6 +58,8 @@ public class UserBinaryFileStorage implements UserDAO{
                 outputStream.writeObject(user_);
             }
         } catch (IOException e) {
+            System.out.printf("write method --> %s%n", e.getClass());
+            System.out.println(e.getMessage());
             //exception handling left as an exercise for the reader
         }
     }
@@ -67,11 +75,15 @@ public class UserBinaryFileStorage implements UserDAO{
                 allUsers.add(user);
             }
         } catch (NullPointerException e){
+            System.out.printf("readAll method --> %s%n", e.getClass());
+            System.out.println(e.getMessage());
             return null;
         } catch (IOException e) {
+            System.out.printf("readAll method --> %s%n", e.getClass());
             System.out.println(e.getMessage());
             return allUsers;
         }catch (ClassNotFoundException e) {
+            System.out.printf("readAll method --> %s%n", e.getClass());
             System.out.println(e.getMessage());
             return null;
         }
@@ -80,6 +92,16 @@ public class UserBinaryFileStorage implements UserDAO{
 
     @Override
     public void delete(int id) {
-
+        List<User> allUsers = readAll();
+        allUsers.removeIf(user -> user.getId() == id);
+        file.delete();
+        try {
+            file.createNewFile();
+            for (User user: allUsers){
+                write(user);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

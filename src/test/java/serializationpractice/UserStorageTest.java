@@ -13,9 +13,9 @@ public class UserStorageTest {
 
     private final String emptyFilePath = "src/test/resources/emptyFile.txt";
     private final String userFilePath = "src/test/resources/userFile.txt";
-    private final User tj = new User(1, "TJ", 25);
-    private final User alex = new User(2, "Alex", 25);
-    private final User kiki = new User(3, "Kiki", 1);
+    private final UserOld tj = new UserOld(1, "TJ", 25);
+    private final UserOld alex = new UserOld(2, "Alex", 25);
+    private final UserOld kiki = new UserOld(3, "Kiki", 1);
 
     @BeforeEach
     public void setupFiles() throws IOException {
@@ -46,10 +46,10 @@ public class UserStorageTest {
         UserStorage userStorage = new UserStorage(emptyFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        UserOld userOld = userStorage.readUser(id);
 
         //Assert
-        assertNull(user);
+        assertNull(userOld);
     }
 
     @Test
@@ -59,10 +59,10 @@ public class UserStorageTest {
         UserStorage userStorage = new UserStorage(userFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        UserOld userOld = userStorage.readUser(id);
 
         //Assert
-        assertNotNull(user);
+        assertNotNull(userOld);
     }
 
     @Test
@@ -71,10 +71,10 @@ public class UserStorageTest {
         UserStorage userStorage = new UserStorage(userFilePath);
 
         //Act
-        User user = userStorage.readUser(tj.getId());
+        UserOld userOld = userStorage.readUser(tj.getId());
 
         //Assert
-        assertEquals(tj, user);
+        assertEquals(tj, userOld);
     }
 
     @Test
@@ -85,10 +85,10 @@ public class UserStorageTest {
 
         //Act
         userStorage.writeUser(tj);
-        User userReadFromFile = userStorage.readUser(tj.getId());
+        UserOld userOldReadFromFile = userStorage.readUser(tj.getId());
 
         //Assert
-        assertEquals(tj, userReadFromFile);
+        assertEquals(tj, userOldReadFromFile);
     }
 
     @Test
@@ -97,10 +97,10 @@ public class UserStorageTest {
         UserStorage userStorage = new UserStorage(userFilePath);
 
         //Act
-        User userReadFromFile = userStorage.readUser(kiki.getId());
+        UserOld userOldReadFromFile = userStorage.readUser(kiki.getId());
 
         //Assert
-        assertEquals(kiki, userReadFromFile);
+        assertEquals(kiki, userOldReadFromFile);
     }
 
     @Test
@@ -111,39 +111,39 @@ public class UserStorageTest {
         //Act
         userStorage.writeUser(tj);
         userStorage.writeUser(alex);
-        User userReadFromFile = userStorage.readUser(tj.getId());
-        User userReadFromFile1 = userStorage.readUser(alex.getId());
+        UserOld userOldReadFromFile = userStorage.readUser(tj.getId());
+        UserOld userOldReadFromFile1 = userStorage.readUser(alex.getId());
 
         //Assert
-        assertEquals(tj, userReadFromFile);
-        assertEquals(alex, userReadFromFile1);
+        assertEquals(tj, userOldReadFromFile);
+        assertEquals(alex, userOldReadFromFile1);
     }
 
     @Test
     public void test_readAllUsers_allUsersAreReadSuccessfully(){
         //Arrange
         UserStorage userStorage = new UserStorage(userFilePath);
-        List<User> expected = Arrays.asList(tj, alex, kiki);
+        List<UserOld> expected = Arrays.asList(tj, alex, kiki);
 
         //Act
-        List<User> allUsers = userStorage.readAllUsers();
+        List<UserOld> allUserOlds = userStorage.readAllUsers();
 
         //Assert
-        assertEquals(expected, allUsers);
+        assertEquals(expected, allUserOlds);
     }
 
     @Test
     public void test_deleteUser_correctlyDeletesUserFromFile(){
         //Arrange
         UserStorage userStorage = new UserStorage(userFilePath);
-        List<User> expected = Arrays.asList(alex, kiki);
+        List<UserOld> expected = Arrays.asList(alex, kiki);
 
         //Act
         userStorage.deleteUser(tj.getId());
-        List<User> allUsers = userStorage.readAllUsers();
+        List<UserOld> allUserOlds = userStorage.readAllUsers();
 
         //Assert
-        assertEquals(expected, allUsers);
+        assertEquals(expected, allUserOlds);
     }
 
 }

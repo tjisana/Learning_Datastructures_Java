@@ -2,14 +2,14 @@ package serializationpractice;
 
 import java.util.Objects;
 
-public class User {
+public class UserOld {
     private int id;
     private String name;
     private int age;
 
-    public User(){}
+    public UserOld(){}
 
-    public User(int id, String name, int age){
+    public UserOld(int id, String name, int age){
         this.id = id;
         this.name = name;
         this.age = age;
@@ -36,8 +36,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name);
+        UserOld userOld = (UserOld) o;
+        return id == userOld.id && age == userOld.age && Objects.equals(name, userOld.name);
     }
 
     @Override

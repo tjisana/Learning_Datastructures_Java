@@ -1,5 +1,8 @@
 package daopractice;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,14 +28,20 @@ public class User implements Serializable {
     private int id;
     private String name;
     private int age;
+    private int level;
 
-    public User() {}
+    public User(int id, String name, int age, int level) {
+        this(id, name, age);
+        this.level = level;
+    }
 
     public User(int id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
+
+    public User() {}
 
     public int getId() {
         return id;
@@ -56,6 +65,30 @@ public class User implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    private void readObject(ObjectInputStream aInputStream) throws ClassNotFoundException, IOException
+    {
+        id = aInputStream.readInt();
+        name = aInputStream.readUTF();
+        age = aInputStream.readInt();
+        level = aInputStream.readInt();;
+    }
+
+    private void writeObject(ObjectOutputStream aOutputStream) throws IOException
+    {
+        aOutputStream.writeInt(id);
+        aOutputStream.writeUTF(name);
+        aOutputStream.writeInt(age);
+        aOutputStream.writeInt(100);
     }
 
 }
