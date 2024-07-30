@@ -13,7 +13,7 @@ public class UserFileStorage implements UserDAO{
     }
 
     @Override
-    public User readUser(int id) {
+    public User read(int id) {
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -38,7 +38,7 @@ public class UserFileStorage implements UserDAO{
     }
 
     @Override
-    public void writeUser(User user) {
+    public void write(User user) {
         try(FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
@@ -51,7 +51,7 @@ public class UserFileStorage implements UserDAO{
     }
 
     @Override
-    public List<User> readAllUsers() {
+    public List<User> readAll() {
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
             String line;
             List<User> foundUsers = new ArrayList<>();
@@ -77,8 +77,8 @@ public class UserFileStorage implements UserDAO{
     }
 
     @Override
-    public void deleteUser(int id) {
-        List<User> allusers  = readAllUsers();
+    public void delete(int id) {
+        List<User> allusers  = this.readAll();
         User userToDelete = null;
         for (User user: allusers){
             if (user.getId() == id){
@@ -90,7 +90,7 @@ public class UserFileStorage implements UserDAO{
         try {
             file.createNewFile();
             for (User user: allusers){
-                writeUser(user);
+                write(user);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

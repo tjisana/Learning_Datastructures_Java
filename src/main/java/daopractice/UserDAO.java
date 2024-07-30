@@ -2,11 +2,11 @@ package daopractice;
 
 import java.util.List;
 
-public interface UserDAO {
+public interface UserDAO extends IDAO<User> {
 
-    public User readUser(int id);
-    public void writeUser(User user);
-    public List<User> readAllUsers();
-    public void deleteUser(int id);
+    public User read(int id);
+    public void write(User user);
+    public List<User> readAll();
+    public void delete(int id);
 
 }

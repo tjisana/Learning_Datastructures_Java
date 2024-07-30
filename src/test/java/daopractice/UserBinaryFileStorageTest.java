@@ -25,13 +25,11 @@ public class UserBinaryFileStorageTest {
             System.out.println(e.getMessage());
         }
 
-        try(FileWriter fw = new FileWriter(userFilePath, false);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
-            //TODO replace with ObjectOutputStream to write as binary instead of text
-            out.println(tj);
-            out.println(alex);
-            out.println(kiki);
+        try(FileOutputStream  fos = new FileOutputStream(userFilePath);
+            ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(tj);
+            oos.writeObject(alex);
+            oos.writeObject(kiki);
 
         } catch (IOException e) {
             System.out.printf("Could not create setup file %s%n",userFilePath);
@@ -43,94 +41,94 @@ public class UserBinaryFileStorageTest {
     public void test_EmptyFileReturnNoUsers(){
         //Arrange
         int id = 1;
-        UserDAO userStorage = new UserFileStorage(emptyFilePath);
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(emptyFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        User user = userBinaryFileStorage.read(id);
 
         //Assert
         assertNull(user);
     }
 
     @Test
-    public void test_readUser_returnsNotNull_whenPassedIDMatchingRecordInFile(){
+    public void test_read_returnsNotNull_whenPassedIDMatchingRecordInFile(){
         //Arrange
         int id = 1;
-        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(userFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        User user = userBinaryFileStorage.read(id);
 
         //Assert
         assertNotNull(user);
     }
 
-//    @Test
-//    public void test_readUser_returnsUserWithCorrectFields_whenPassedIDMatchingRecordInFile(){
-//        //Arrange
-//        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
-//
-//        //Act
-//        User user = userStorage.readUser(tj.getId());
-//
-//        //Assert
-//        assertEquals(tj, user);
-//    }
-//
     @Test
-    public void test_writeUser_AddOneUserToEmptyFile(){
+    public void test_readUser_returnsUserWithCorrectFields_whenPassedIDMatchingRecordInFile(){
         //Arrange
-        UserDAO userStorage = new UserBinaryFileStorage(emptyFilePath);
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(userFilePath);
 
         //Act
-        userStorage.writeUser(tj);
-        User userReadFromFile = userStorage.readUser(tj.getId());
+        User user = userBinaryFileStorage.read(tj.getId());
+
+        //Assert
+        assertEquals(tj, user);
+    }
+//
+    @Test
+    public void test_writeUser_AddOneToEmptyFile(){
+        //Arrange
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(emptyFilePath);
+
+        //Act
+        userBinaryFileStorage.write(tj);
+        User userReadFromFile = userBinaryFileStorage.read(tj.getId());
 
         //Assert
         assertEquals(tj, userReadFromFile);
     }
-//
-//    @Test
-//    public void test_readUser_FromFileWithMultipleUsers(){
-//        //Arrange
-//        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
-//
-//        //Act
-//        User userReadFromFile = userStorage.readUser(kiki.getId());
-//
-//        //Assert
-//        assertEquals(kiki, userReadFromFile);
-//    }
-//
-//    @Test
-//    public void test_writeUser_AddTwoUsersToEmptyFile_verifySecondUser(){
-//        //Arrange
-//        UserDAO userStorage = new UserBinaryFileStorage(emptyFilePath);
-//
-//        //Act
-//        userStorage.writeUser(tj);
-//        userStorage.writeUser(alex);
-//        User userReadFromFile = userStorage.readUser(tj.getId());
-//        User userReadFromFile1 = userStorage.readUser(alex.getId());
-//
-//        //Assert
-//        assertEquals(tj, userReadFromFile);
-//        assertEquals(alex, userReadFromFile1);
-//    }
-//
-//    @Test
-//    public void test_readAllUsers_allUsersAreReadSuccessfully(){
-//        //Arrange
-//        UserDAO userStorage = new UserBinaryFileStorage(userFilePath);
-//        List<User> expected = Arrays.asList(tj, alex, kiki);
-//
-//        //Act
-//        List<User> allUsers = userStorage.readAllUsers();
-//
-//        //Assert
-//        assertEquals(expected, allUsers);
-//    }
-//
+
+    @Test
+    public void test_readUser_FromFileWithMultipleUsers(){
+        //Arrange
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(userFilePath);
+
+        //Act
+        User userReadFromFile = userBinaryFileStorage.read(kiki.getId());
+
+        //Assert
+        assertEquals(kiki, userReadFromFile);
+    }
+
+    @Test
+    public void test_writeUser_AddTwoUsersToEmptyFile_verifySecondUser(){
+        //Arrange
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(emptyFilePath);
+
+        //Act
+        userBinaryFileStorage.write(tj);
+        userBinaryFileStorage.write(alex);
+        User userReadFromFile = userBinaryFileStorage.read(tj.getId());
+        User userReadFromFile1 = userBinaryFileStorage.read(alex.getId());
+
+        //Assert
+        assertEquals(tj, userReadFromFile);
+        assertEquals(alex, userReadFromFile1);
+    }
+
+    @Test
+    public void test_readAllUsers_allUsersAreReadSuccessfully(){
+        //Arrange
+        UserDAO userBinaryFileStorage = new UserBinaryFileStorage(userFilePath);
+        List<User> expected = Arrays.asList(tj, alex, kiki);
+
+        //Act
+        List<User> allUsers = userBinaryFileStorage.readAll();
+
+        //Assert
+        assertEquals(expected, allUsers);
+    }
+
 //    @Test
 //    public void test_deleteUser_correctlyDeletesUserFromFile(){
 //        //Arrange

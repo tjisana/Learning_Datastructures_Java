@@ -1,6 +1,8 @@
 package daopractice;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserBinaryFileStorage implements UserDAO{
@@ -12,7 +14,7 @@ public class UserBinaryFileStorage implements UserDAO{
     }
 
     @Override
-    public User readUser(int id) {
+    public User read(int id) {
         try(InputStream in = new FileInputStream(file);
             ObjectInputStream inputStream = new ObjectInputStream(in);){
             User user;
@@ -28,31 +30,56 @@ public class UserBinaryFileStorage implements UserDAO{
             System.out.println(e.getMessage());
             return null;
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            return null;
+//            throw new RuntimeException(e);
         }
         return null;
     }
 
     @Override
-    public void writeUser(User user) {
-        try(OutputStream out = new FileOutputStream(file, true);
+    public void write(User user) {
+        List<User> allUsersCurrentlyInFile = readAll();
+        if (allUsersCurrentlyInFile == null){
+            allUsersCurrentlyInFile = new ArrayList<>();
+        }
+        try(OutputStream out = Files.newOutputStream(file.toPath());
             ObjectOutputStream outputStream = new ObjectOutputStream(out);
             )
         {
-            outputStream.writeObject(user);
-
+            allUsersCurrentlyInFile.add(user);
+            for(User user_: allUsersCurrentlyInFile){
+                outputStream.writeObject(user_);
+            }
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
     }
 
     @Override
-    public List<User> readAllUsers() {
-        return List.of();
+    public List<User> readAll() {
+        List<User> allUsers = new ArrayList<>();
+//        try(InputStream in = new FileInputStream(file);
+        try(InputStream in = Files.newInputStream(file.toPath());
+            ObjectInputStream inputStream = new ObjectInputStream(in);){
+            User user;
+            while ((user =(User) inputStream.readObject()) != null) {
+                allUsers.add(user);
+            }
+        } catch (NullPointerException e){
+            return null;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return allUsers;
+        }catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return allUsers;
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void delete(int id) {
 
     }
 }

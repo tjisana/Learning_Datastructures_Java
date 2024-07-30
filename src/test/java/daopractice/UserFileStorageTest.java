@@ -2,7 +2,6 @@ package daopractice;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import serializationpractice.UserStorage;
 
 import java.io.*;
 import java.util.Arrays;
@@ -48,72 +47,72 @@ public class UserFileStorageTest {
         UserDAO userStorage = new UserFileStorage(emptyFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        User user = userStorage.read(id);
 
         //Assert
         assertNull(user);
     }
 
     @Test
-    public void test_readUser_returnsNotNull_whenPassedIDMatchingRecordInFile(){
+    public void test_read_returnsNotNull_whenPassedIDMatchingRecordInFile(){
         //Arrange
         int id = 1;
         UserDAO userStorage = new UserFileStorage(userFilePath);
 
         //Act
-        User user = userStorage.readUser(id);
+        User user = userStorage.read(id);
 
         //Assert
         assertNotNull(user);
     }
 
     @Test
-    public void test_readUser_returnsUserWithCorrectFields_whenPassedIDMatchingRecordInFile(){
+    public void test_readUser_returnsWithCorrectFields_whenPassedIDMatchingRecordInFile(){
         //Arrange
         UserDAO userStorage = new UserFileStorage(userFilePath);
 
         //Act
-        User user = userStorage.readUser(tj.getId());
+        User user = userStorage.read(tj.getId());
 
         //Assert
         assertEquals(tj, user);
     }
 
     @Test
-    public void test_writeUser_AddOneUserToEmptyFile(){
+    public void test_writeUser_AddOneToEmptyFile(){
         //Arrange
         UserDAO userStorage = new UserFileStorage(emptyFilePath);
 
         //Act
-        userStorage.writeUser(tj);
-        User userReadFromFile = userStorage.readUser(tj.getId());
+        userStorage.write(tj);
+        User userReadFromFile = userStorage.read(tj.getId());
 
         //Assert
         assertEquals(tj, userReadFromFile);
     }
 
     @Test
-    public void test_readUser_FromFileWithMultipleUsers(){
+    public void test_read_FromFileWithMultipleUsers(){
         //Arrange
         UserDAO userStorage = new UserFileStorage(userFilePath);
 
         //Act
-        User userReadFromFile = userStorage.readUser(kiki.getId());
+        User userReadFromFile = userStorage.read(kiki.getId());
 
         //Assert
         assertEquals(kiki, userReadFromFile);
     }
 
     @Test
-    public void test_writeUser_AddTwoUsersToEmptyFile_verifySecondUser(){
+    public void test_writeUser_AddTwoUsersToEmptyFile_verifySecond(){
         //Arrange
         UserDAO userStorage = new UserFileStorage(emptyFilePath);
 
         //Act
-        userStorage.writeUser(tj);
-        userStorage.writeUser(alex);
-        User userReadFromFile = userStorage.readUser(tj.getId());
-        User userReadFromFile1 = userStorage.readUser(alex.getId());
+        userStorage.write(tj);
+        userStorage.write(alex);
+        User userReadFromFile = userStorage.read(tj.getId());
+        User userReadFromFile1 = userStorage.read(alex.getId());
 
         //Assert
         assertEquals(tj, userReadFromFile);
@@ -127,21 +126,21 @@ public class UserFileStorageTest {
         List<User> expected = Arrays.asList(tj, alex, kiki);
 
         //Act
-        List<User> allUsers = userStorage.readAllUsers();
+        List<User> allUsers = userStorage.readAll();
 
         //Assert
         assertEquals(expected, allUsers);
     }
 
     @Test
-    public void test_deleteUser_correctlyDeletesUserFromFile(){
+    public void test_deleteUser_correctlyDeletesFromFile(){
         //Arrange
         UserDAO userStorage = new UserFileStorage(userFilePath);
         List<User> expected = Arrays.asList(alex, kiki);
 
         //Act
-        userStorage.deleteUser(tj.getId());
-        List<User> allUsers = userStorage.readAllUsers();
+        userStorage.delete(tj.getId());
+        List<User> allUsers = userStorage.readAll();
 
         //Assert
         assertEquals(expected, allUsers);
